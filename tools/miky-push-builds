@@ -1,0 +1,50 @@
+#!/bin/bash
+# miky-push-builds: copia su Miky (/opt/llamacpp) le build llama.cpp del PC che
+# le mancano. Su Miky miky-rpc-autoupdate vede la build nuova e riavvia
+# miky-rpc con quella (solo quando nessun llama-server e' collegato).
+#
+#   miky-push-builds                 -> copia l'ultima build (se Miky non ce l'ha)
+#   miky-push-builds llama-b11514    -> copia proprio quella
+#   miky-push-builds --all           -> copia tutte quelle che mancano
+#
+# La copia va in .incoming-<nome> e viene rinominata solo alla fine: Miky non
+# vede mai una build a meta'. Se si interrompe, rilanciando rsync riprende.
+
+set -euo pipefail
+
+SRC=${MIKY_SRC:-/mnt/lm_models/DEBIAN_FOLDER/llamacpp}
+HOST=${MIKY_HOST:-miky}
+DEST=${MIKY_DEST:-/opt/llamacpp}
+SSH_OPTS=(-o BatchMode=yes -o ConnectTimeout=5)
+
+say() { echo "[miky-push] $*"; }
+
+local_builds() {
+    for d in "$SRC"/llama-b*/; do
+        d=${d%/}
+        [[ "$(basename "$d")" =~ ^llama-b[0-9]+$ ]] || continue
+        [ -x "$d/ggml-rpc-server" ] && [ -x "$d/llama-server" ] && basename "$d"
+    done | sort -V
+}
+
+case "${1:-}" in
+    --all) mapfile -t todo < <(local_builds) ;;
+    "")    mapfile -t todo < <(local_builds | tail -1) ;;
+    *)     todo=("$@") ;;
+esac
+[ ${#todo[@]} -gt 0 ] || { say "nessuna build in $SRC"; exit 1; }
+
+ssh "${SSH_OPTS[@]}" "$HOST" "mkdir -p $DEST" 2>/dev/null \
+    || { say "Miky ($HOST) non raggiungibile via ssh"; exit 1; }
+
+for name in "${todo[@]}"; do
+    [ -x "$SRC/$name/ggml-rpc-server" ] || { say "$name: manca $SRC/$name/ggml-rpc-server, salto"; continue; }
+    if ssh "${SSH_OPTS[@]}" "$HOST" "test -x $DEST/$name/ggml-rpc-server" 2>/dev/null; then
+        say "$name: gia' su Miky"
+        continue
+    fi
+    say "$name: copio $(du -sh "$SRC/$name" | cut -f1) su $HOST:$DEST ..."
+    rsync -a --info=progress2 -e "ssh ${SSH_OPTS[*]}" "$SRC/$name/" "$HOST:$DEST/.incoming-$name/"
+    ssh "${SSH_OPTS[@]}" "$HOST" "rm -f $DEST/.bad-b${name#llama-b} && mv $DEST/.incoming-$name $DEST/$name"
+    say "$name: copiata. Miky passa a questa build appena nessun llama-server e' collegato."
+done

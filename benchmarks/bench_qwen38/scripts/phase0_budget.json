@@ -1,0 +1,28 @@
+{
+  "n_full_attn_layers": 9,
+  "n_linear_layers": 24,
+  "vram_limit_mib": 7618.6,
+  "weight_mib": 5079.7,
+  "kv_budget_mib_hi": 1138.9,
+  "kv_budget_mib_lo": 1438.9,
+  "per_dtype": {
+    "f16": {
+      "bytes_per_token": 36864.0,
+      "mib_per_1k_tokens": 35.156,
+      "ctx_max_budget700": 32395,
+      "ctx_max_budget400": 40928
+    },
+    "q8_0": {
+      "bytes_per_token": 19584.0,
+      "mib_per_1k_tokens": 18.677,
+      "ctx_max_budget700": 60979,
+      "ctx_max_budget400": 77041
+    },
+    "q4_0": {
+      "bytes_per_token": 10368.0,
+      "mib_per_1k_tokens": 9.888,
+      "ctx_max_budget700": 115182,
+      "ctx_max_budget400": 145523
+    }
+  }
+}

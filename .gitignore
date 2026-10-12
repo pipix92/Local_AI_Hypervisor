@@ -1,0 +1,56 @@
+# Byte-compiled / optimized / AST files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# IDE and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Operating System files
+.DS_Store
+Thumbs.db
+D:/
+
+# Backup files
+*.bak
+*.bak_*
+*.2026*
+*.old
+
+# Runtime local states and logs
+*.log
+.ai_tui_*.json
+.cache/
+__pycache__/
+
+# Machine-specific benchmarks and local scans
+kv_local_results.json
+kv_remote_results.json
+mikye_calibration.json
+mikye_optimal_presets.json
+target_benchmark_results.json
+validate_baseline.json
+local_models_geom.json
+grid_ref.json
+lcb_values.json
+graph_data.json

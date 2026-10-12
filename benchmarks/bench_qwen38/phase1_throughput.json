@@ -1,0 +1,69 @@
+[
+  {
+    "ctx": 65536,
+    "ctk": "q8_0",
+    "ctv": "q8_0",
+    "cmd": "-m D:\\models\\mradermacher\\Qwen3.8-9B-Distill-uncensored-heretic-i1-GGUF\\Qwen3.8-9B-Distill-uncensored-heretic.i1-IQ4_XS.gguf -c 65536 -ngl 99 -fa on -ctk q8_0 -ctv q8_0 -t 8 --port 18434 --no-webui -np 1",
+    "load_seconds": 10.6,
+    "gpu_used_after_load_mib": 6987,
+    "log": {
+      "_raw_kv_lines": [
+        "0.10.024.508 I srv    load_model: initializing, n_slots = 1, n_ctx_slot = 65536, kv_unified = 'false'"
+      ]
+    },
+    "ttft_s": 0.789,
+    "gen_seconds": 7.783,
+    "gen_tokens_streamed": 256,
+    "decode_tok_per_s": 32.891,
+    "prompt_chars": 3300,
+    "peak_gpu_mib": 6992,
+    "status": "ok",
+    "gpu_after_kill_mib": 954,
+    "log_file": "C:/Users/User/Documents/ai_tui/bench_qwen38\\logs\\server_c65536_q8_0.log"
+  },
+  {
+    "ctx": 65536,
+    "ctk": "q4_0",
+    "ctv": "q4_0",
+    "cmd": "-m D:\\models\\mradermacher\\Qwen3.8-9B-Distill-uncensored-heretic-i1-GGUF\\Qwen3.8-9B-Distill-uncensored-heretic.i1-IQ4_XS.gguf -c 65536 -ngl 99 -fa on -ctk q4_0 -ctv q4_0 -t 8 --port 18434 --no-webui -np 1",
+    "load_seconds": 10.5,
+    "gpu_used_after_load_mib": 6473,
+    "log": {
+      "_raw_kv_lines": [
+        "0.09.665.255 I srv    load_model: initializing, n_slots = 1, n_ctx_slot = 65536, kv_unified = 'false'"
+      ]
+    },
+    "ttft_s": 0.847,
+    "gen_seconds": 7.882,
+    "gen_tokens_streamed": 256,
+    "decode_tok_per_s": 32.479,
+    "prompt_chars": 3300,
+    "peak_gpu_mib": 6481,
+    "status": "ok",
+    "gpu_after_kill_mib": 972,
+    "log_file": "C:/Users/User/Documents/ai_tui/bench_qwen38\\logs\\server_c65536_q4_0.log"
+  },
+  {
+    "ctx": 65536,
+    "ctk": "f16",
+    "ctv": "f16",
+    "cmd": "-m D:\\models\\mradermacher\\Qwen3.8-9B-Distill-uncensored-heretic-i1-GGUF\\Qwen3.8-9B-Distill-uncensored-heretic.i1-IQ4_XS.gguf -c 65536 -ngl 99 -fa on -ctk f16 -ctv f16 -t 8 --port 18434 --no-webui -np 1",
+    "load_seconds": 9.5,
+    "gpu_used_after_load_mib": 7649,
+    "log": {
+      "_raw_kv_lines": [
+        "0.01.602.116 W common_fit_params: failed to fit params to free device memory: n_gpu_layers already set by user to 99, abort",
+        "0.08.599.547 I srv    load_model: initializing, n_slots = 1, n_ctx_slot = 65536, kv_unified = 'false'"
+      ]
+    },
+    "ttft_s": 0.765,
+    "gen_seconds": 7.706,
+    "gen_tokens_streamed": 256,
+    "decode_tok_per_s": 33.221,
+    "prompt_chars": 3300,
+    "peak_gpu_mib": 7655,
+    "status": "ok",
+    "gpu_after_kill_mib": 899,
+    "log_file": "C:/Users/User/Documents/ai_tui/bench_qwen38\\logs\\server_c65536_f16.log"
+  }
+]

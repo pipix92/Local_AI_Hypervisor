@@ -1,0 +1,44 @@
+{
+  "_meta": "Profili RPC personalizzati di ai_tui (Tab 9). I preset validati stanno in backend.py: LlamaServerManager.RPC_PRESETS.",
+  "profili_utente": {
+    "MIKY-100": {
+      "name": "MIKY-100",
+      "device": "RPC0,CUDA0",
+      "rpc": "192.168.1.100:50052",
+      "ctx_size": 131072,
+      "parallel": 1,
+      "ngl": 99,
+      "flash_attn": true,
+      "kv_type": "q4_1",
+      "kv_value": "q4_1",
+      "threads": 8,
+      "jinja": true,
+      "tok_s": 0.0,
+      "recommended": false,
+      "description": "Tutta la VRAM allocabile: Miky (RPC0) margine [0] MiB, locale [600] MiB (--fit-target)",
+      "extra_args": [
+        "--fit",
+        "on",
+        "--fit-target",
+        "0,600"
+      ]
+    },
+    "MIKY-5050-ONLY": {
+      "name": "MIKY-5050-ONLY",
+      "device": "RPC0",
+      "rpc": "192.168.1.100:50052",
+      "ctx_size": 131072,
+      "parallel": 1,
+      "ngl": 99,
+      "flash_attn": true,
+      "kv_type": "q4_1",
+      "kv_value": "q4_1",
+      "threads": 8,
+      "jinja": true,
+      "tok_s": 0.0,
+      "recommended": false,
+      "description": "Solo RTX 5050 su Miky (offload 100% remoto, RTX 3050 locale libera al 100%)",
+      "extra_args": []
+    }
+  }
+}

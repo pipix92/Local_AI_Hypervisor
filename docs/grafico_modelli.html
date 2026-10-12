@@ -1,0 +1,115 @@
+<div id="w" style="font-family:ui-sans-serif,system-ui,sans-serif;color:var(--foreground)">
+<style>
+#w{padding:14px 16px 20px;border:1px solid var(--border);border-radius:14px;background:var(--card)}
+#w h2{margin:0 0 3px;font-size:19px;font-weight:650}
+#w .sub{color:var(--muted-foreground);font-size:12.5px;line-height:1.55;margin-bottom:14px}
+#c{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+#c button{background:transparent;border:1px solid var(--border);color:var(--foreground);
+  padding:6px 13px;border-radius:8px;font-size:12.5px;cursor:pointer;transition:all .15s}
+#c button:hover{border-color:var(--accent)}
+#c button.on{background:var(--accent);color:var(--card);border-color:var(--accent);font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;padding:7px 9px;border-bottom:1.5px solid var(--border);
+  color:var(--muted-foreground);font-weight:600;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em}
+td{padding:8px 9px;border-bottom:1px solid var(--border)}
+tr:hover td{background:color-mix(in srgb,var(--accent) 7%,transparent)}
+.bar{height:5px;border-radius:3px;background:var(--accent);display:inline-block;vertical-align:middle}
+.na{color:var(--muted-foreground);opacity:.45;font-style:italic}
+.tag{display:inline-block;padding:1px 7px;border-radius:5px;font-size:10.5px;font-weight:600}
+.hyb{background:color-mix(in srgb,#22c55e 22%,transparent);color:#22c55e}
+.dns{background:color-mix(in srgb,#ef4444 20%,transparent);color:#ef4444}
+.cell{display:flex;align-items:center;gap:7px}
+.nt{margin-top:16px;padding:11px 13px;border-left:2.5px solid var(--accent);
+  background:color-mix(in srgb,var(--accent) 6%,transparent);font-size:12px;line-height:1.65;color:var(--muted-foreground)}
+.nt b{color:var(--foreground)}
+.fix{background:color-mix(in srgb,#f59e0b 13%,transparent);border-left-color:#f59e0b}
+</style>
+
+<h2>D:\models — intelligenza × KV cache</h2>
+<div class="sub">
+GB e KV sono <b>MISURATI</b> leggendo l'header GGUF di ogni file.
+I punteggi sono <b>DICHIARATI</b> su model card / paper ufficiali, da 46 repo verificati.
+<span class="na">—</span> = non pubblicato dalla fonte.</div>
+
+<div id="c">
+  <button class="on" data-m="all">Tutti</button>
+  <button data-m="hyb">Solo ibridi</button>
+  <button data-m="fit">Stanno in 8 GB</button>
+  <button data-m="code">Focus codice</button>
+  <button data-m="both">Con MMLU + HumanEval</button>
+</div>
+
+<table>
+<thead><tr>
+  <th>Modello</th><th>GB</th><th>KV q8₀</th><th>Layer</th>
+  <th>MMLU</th><th>MMLU-Pro</th><th>HumanEval</th><th>LCB v6</th>
+</tr></thead>
+<tbody id="tb"></tbody>
+</table>
+
+<div class="nt fix"><b>Correzione.</b> In una versione precedente di questo grafico
+Qwen3.5-4B aveva MMLU-Pro 82,5. Era sbagliato: 82,5 è la colonna di
+<b>Qwen3.5-9B</b>. Il valore corretto di Qwen3.5-4B è <b>79,1</b>, letto dalla sesta
+colonna dell'header della tabella.</div>
+
+<div class="nt"><b>Su 41 modelli, uno solo pubblica MMLU originale e HumanEval insieme:
+Qwen2.5-Coder-7B (45,6 / 88,4).</b> Non è un buco di ricerca: HumanEval è saturo
+al 90-95% e non distingue più, quindi Qwen, Nemotron, Gemma e Spark hanno smesso di
+pubblicarlo e usano <b>LiveCodeBench v6</b>, che è più difficile.</div>
+
+<div class="nt"><b>Tre avvertenze sui numeri.</b>
+① Le card Qwen3.5 hanno tabelle <i>Thinking</i> e <i>Non-Thinking</i> separate:
+Qwen3.5-2B fa 55,3 senza thinking e 66,5 con thinking — un numero senza la modalità
+non significa niente.
+② Il technical report di Qwen2.5-Coder ha la riga MMLU invertita tra v1/v2 e v3:
+qui riportati 45,6 / 68,7, risolti incrociando il blog ufficiale.
+③ In due card la parola "HumanEval" indica throughput in tok/s, non accuratezza:
+nessun numero ricavato da lì.</div>
+</div>
+
+<script>
+const D={
+ "Qwen2.5-Coder-7B":  {gb:3.73, kv:null,  ly:"—",   hy:null, mmlu:45.6, mp:68.7, he:88.4, lcb:null, code:1},
+ "Qwen3.6-35B-A3B":   {gb:13.33,kv:19.5,  ly:"10/40",hy:1,   mmlu:null, mp:85.2, he:null, lcb:80.4, code:0},
+ "Qwen3.5-4B":        {gb:2.52, kv:31.2,  ly:"8/32", hy:1,   mmlu:null, mp:79.1, he:null, lcb:55.8, code:0},
+ "Gemma4-12B":        {gb:5.67, kv:750,   ly:"48/48",hy:0,   mmlu:null, mp:77.2, he:null, lcb:77.1, code:0},
+ "Gemma4-E2B":        {gb:3.19, kv:68.4,  ly:"35/35",hy:0,   mmlu:null, mp:null, he:null, lcb:77.1, code:0},
+ "Qwen3-4B-Thinking": {gb:2.33, kv:140.6, ly:"36/36",hy:0,   mmlu:null, mp:null, he:null, lcb:57.4, code:1},
+ "Spark-X2.5-4B":     {gb:2.42, kv:140.6, ly:"36/36",hy:0,   mmlu:null, mp:null, he:null, lcb:null, code:0},
+ "Nemotron-3-Nano-4B":{gb:2.64, kv:15.6,  ly:"4/42", hy:1,   mmlu:null, mp:null, he:null, lcb:51.8, code:0},
+ "MiniCPM5-2B":       {gb:1.81, kv:null,  ly:"—",   hy:null, mmlu:null, mp:70.8, he:null, lcb:null, code:0},
+ "mica-v0.1-4b":      {gb:2.86, kv:31.2,  ly:"8/32", hy:1,   mmlu:null, mp:53.0, he:null, lcb:null, code:0},
+};
+const TOT=8192, HEAD=5300;
+const ctxMax=r=>(!r.gb||!r.kv)?null:Math.floor((TOT-HEAD-r.gb*1024)/r.kv*1000);
+const bar=v=>v==null?'<span class="na">—</span>'
+ :`<div class="cell"><span style="min-width:36px;text-align:right">${v}</span><span class="bar" style="width:${Math.round(v*0.5)}px"></span></div>`;
+const ctx=c=>{ if(c==null) return '<span class="na">—</span>';
+  const col = c>=32000?'#22c55e':c>=12000?'#f59e0b':'#ef4444';
+  return `<span style="color:${col};font-weight:600">${(c/1000).toFixed(0)}k</span>`; };
+
+function row(k,r){
+  return `<tr>
+   <td><b>${k}</b> ${r.hy===1?'<span class="tag hyb">ibrido</span>':r.hy===0?'<span class="tag dns">denso</span>':''}</td>
+   <td>${r.gb?r.gb.toFixed(2):'<span class="na">—</span>'}</td>
+   <td>${r.kv?r.kv.toFixed(1):'<span class="na">—</span>'}</td>
+   <td style="color:var(--muted-foreground)">${r.ly}</td>
+   <td>${bar(r.mmlu)}</td><td>${bar(r.mp)}</td><td>${bar(r.he)}</td><td>${bar(r.lcb)}</td>
+   <td>${ctx(ctxMax(r))}</td></tr>`;
+}
+let m='all';
+function draw(){
+  let e=Object.entries(D);
+  if(m==='hyb')   e=e.filter(([,r])=>r.hy===1);
+  if(m==='fit')   e=e.filter(([,r])=>{const c=ctxMax(r);return c&&c>=12000;});
+  if(m==='code')  e=e.filter(([,r])=>r.code);
+  if(m==='both')  e=e.filter(([,r])=>r.mmlu&&r.he);
+  e.sort((a,b)=>{const s=r=>r.mp??r.mmlu??r.he??r.lcb??-1;return s(b[1])-s(a[1]);});
+  document.getElementById('tb').innerHTML=
+    e.map(([k,r])=>row(k,r)).join('')||`<tr><td colspan="9" class="na">nessun modello in questa vista</td></tr>`;
+}
+document.querySelectorAll('#c button').forEach(b=>{b.onclick=()=>{
+  document.querySelector('#c button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); m=b.dataset.m; draw();}});
+draw();
+</script>

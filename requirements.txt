@@ -1,0 +1,12 @@
+# Core UI & Terminal Framework
+rich>=13.7.0
+
+# Hardware & System Telemetry
+psutil>=5.9.0
+
+# Asset and Icon Processing
+Pillow>=10.0.0
+
+# Optional / Cloud integration
+# modal>=0.60.0
+# torch>=2.0.0
